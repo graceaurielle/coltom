@@ -1,0 +1,15 @@
+body {
+  color: red;
+}
+
+.btn-login{
+    color : red;
+}
+
+.login-with-email-link{
+    color : yellowgreen;
+}
+
+.for-login > div:nth-child(2){
+    color:blue;
+}

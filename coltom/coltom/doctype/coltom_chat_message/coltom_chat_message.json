@@ -1,0 +1,90 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-03-26 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "channel",
+  "sender",
+  "sender_full_name",
+  "message",
+  "message_type",
+  "sent_time",
+  "is_read"
+ ],
+ "fields": [
+  {
+   "fieldname": "channel",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Canal",
+   "options": "Coltom Chat Channel",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sender",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Expéditeur",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sender_full_name",
+   "fieldtype": "Data",
+   "label": "Nom expéditeur"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Message",
+   "reqd": 1
+  },
+  {
+   "fieldname": "message_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Text\nImage\nFile",
+   "default": "Text"
+  },
+  {
+   "fieldname": "sent_time",
+   "fieldtype": "Datetime",
+   "label": "Heure d'envoi",
+   "reqd": 1
+  },
+  {
+   "fieldname": "is_read",
+   "fieldtype": "Check",
+   "label": "Lu"
+  }
+ ],
+ "links": [],
+ "modified": "2026-03-26 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Coltom",
+ "name": "Coltom Chat Message",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "All",
+   "share": 0,
+   "submit": 0,
+   "write": 1
+  }
+ ],
+ "sort_field": "sent_time",
+ "sort_order": "ASC",
+ "track_changes": 0
+}

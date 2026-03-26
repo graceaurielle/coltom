@@ -1,0 +1,542 @@
+/* ===== COLTOM CHAT WIDGET ===== */
+
+/* Bouton flottant bas-gauche */
+#coltom-chat-btn {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #1a73e8, #0d5db5);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: 0 4px 14px rgba(26, 115, 232, 0.45);
+	z-index: 9999;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	user-select: none;
+}
+
+#coltom-chat-btn:hover {
+	transform: scale(1.08);
+	box-shadow: 0 6px 20px rgba(26, 115, 232, 0.55);
+}
+
+.coltom-badge {
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	background: #e53935;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	border-radius: 10px;
+	padding: 1px 5px;
+	min-width: 18px;
+	text-align: center;
+	line-height: 16px;
+	border: 2px solid #fff;
+}
+
+/* Modal chat */
+#coltom-chat-modal {
+	position: fixed;
+	bottom: 78px;
+	left: 20px;
+	width: 700px;
+	height: 520px;
+	background: #fff;
+	border-radius: 14px;
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+	z-index: 9998;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 1px solid #e5e7eb;
+	animation: coltom-slide-up 0.2s ease;
+}
+
+@keyframes coltom-slide-up {
+	from { opacity: 0; transform: translateY(10px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+/* En-tête du modal */
+.coltom-chat-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	background: linear-gradient(135deg, #1a73e8, #0d5db5);
+	color: #fff;
+	flex-shrink: 0;
+}
+
+.coltom-chat-title {
+	font-size: 14px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+}
+
+.coltom-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.coltom-icon-btn {
+	background: rgba(255,255,255,0.15);
+	border: none;
+	color: #fff;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 13px;
+	transition: background 0.15s;
+}
+
+.coltom-icon-btn:hover {
+	background: rgba(255,255,255,0.28);
+}
+
+/* Corps du modal */
+.coltom-chat-body {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+/* Sidebar - liste des canaux */
+.coltom-sidebar {
+	width: 220px;
+	border-right: 1px solid #e5e7eb;
+	display: flex;
+	flex-direction: column;
+	background: #f9fafb;
+	flex-shrink: 0;
+}
+
+.coltom-search-box {
+	padding: 10px;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.coltom-search-input {
+	width: 100%;
+	padding: 6px 10px;
+	border: 1px solid #d1d5db;
+	border-radius: 20px;
+	font-size: 12px;
+	outline: none;
+	background: #fff;
+	transition: border 0.15s;
+}
+
+.coltom-search-input:focus {
+	border-color: #1a73e8;
+}
+
+.coltom-channel-list {
+	flex: 1;
+	overflow-y: auto;
+	padding: 4px 0;
+}
+
+.coltom-channel-list::-webkit-scrollbar { width: 4px; }
+.coltom-channel-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+.coltom-channel-item {
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: background 0.12s;
+	border-radius: 0;
+	gap: 10px;
+}
+
+.coltom-channel-item:hover {
+	background: #f0f4ff;
+}
+
+.coltom-channel-item.active {
+	background: #e8f0fe;
+}
+
+.coltom-ch-avatar {
+	width: 36px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.coltom-avatar-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.coltom-avatar-fallback {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, #1a73e8, #4285f4);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: 600;
+	border-radius: 50%;
+}
+
+.coltom-avatar-group {
+	background: linear-gradient(135deg, #34a853, #0f9d58);
+	font-size: 14px;
+}
+
+.coltom-ch-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.coltom-ch-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.coltom-ch-name {
+	font-size: 12px;
+	font-weight: 600;
+	color: #1f2937;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100px;
+}
+
+.coltom-ch-time {
+	font-size: 10px;
+	color: #9ca3af;
+	flex-shrink: 0;
+}
+
+.coltom-ch-bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 2px;
+}
+
+.coltom-ch-preview {
+	font-size: 11px;
+	color: #6b7280;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 120px;
+}
+
+.coltom-ch-unread {
+	background: #1a73e8;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	border-radius: 10px;
+	padding: 1px 5px;
+	min-width: 16px;
+	text-align: center;
+	flex-shrink: 0;
+}
+
+.coltom-no-channels {
+	text-align: center;
+	font-size: 11px;
+	color: #9ca3af;
+	padding: 30px 16px;
+	line-height: 1.6;
+}
+
+/* Zone principale - messages */
+.coltom-main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.coltom-empty-state {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: #9ca3af;
+	font-size: 12px;
+	text-align: center;
+	line-height: 1.8;
+	gap: 12px;
+}
+
+.coltom-messages-area {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.coltom-conv-header {
+	padding: 10px 16px;
+	border-bottom: 1px solid #e5e7eb;
+	background: #fff;
+	flex-shrink: 0;
+}
+
+.coltom-conv-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.coltom-conv-avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.coltom-conv-name {
+	font-size: 13px;
+	font-weight: 600;
+	color: #1f2937;
+}
+
+.coltom-conv-members {
+	font-size: 11px;
+	color: #6b7280;
+}
+
+/* Zone des messages */
+.coltom-messages {
+	flex: 1;
+	overflow-y: auto;
+	padding: 12px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	background: #f8fafc;
+}
+
+.coltom-messages::-webkit-scrollbar { width: 4px; }
+.coltom-messages::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+.coltom-date-divider {
+	text-align: center;
+	margin: 10px 0;
+}
+
+.coltom-date-divider span {
+	background: #e5e7eb;
+	color: #6b7280;
+	font-size: 10px;
+	padding: 3px 10px;
+	border-radius: 10px;
+}
+
+.coltom-msg-wrapper {
+	display: flex;
+	flex-direction: column;
+	max-width: 72%;
+	margin-bottom: 4px;
+}
+
+.coltom-msg-wrapper.mine {
+	align-self: flex-end;
+	align-items: flex-end;
+}
+
+.coltom-msg-wrapper.theirs {
+	align-self: flex-start;
+	align-items: flex-start;
+}
+
+.coltom-msg-sender {
+	font-size: 10px;
+	color: #6b7280;
+	margin-bottom: 2px;
+	margin-left: 4px;
+}
+
+.coltom-msg-bubble {
+	padding: 8px 12px;
+	border-radius: 16px;
+	max-width: 100%;
+	word-break: break-word;
+}
+
+.mine .coltom-msg-bubble {
+	background: linear-gradient(135deg, #1a73e8, #1565c0);
+	color: #fff;
+	border-bottom-right-radius: 4px;
+}
+
+.theirs .coltom-msg-bubble {
+	background: #fff;
+	color: #1f2937;
+	border-bottom-left-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.coltom-msg-text {
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.coltom-msg-meta {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-top: 3px;
+	justify-content: flex-end;
+}
+
+.coltom-msg-time {
+	font-size: 10px;
+	opacity: 0.7;
+}
+
+.mine .coltom-msg-time { color: rgba(255,255,255,0.8); }
+.theirs .coltom-msg-time { color: #9ca3af; }
+
+.coltom-msg-status {
+	font-size: 10px;
+	color: rgba(255,255,255,0.8);
+}
+
+/* Zone de saisie */
+.coltom-input-area {
+	display: flex;
+	align-items: flex-end;
+	padding: 10px 12px;
+	border-top: 1px solid #e5e7eb;
+	background: #fff;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.coltom-msg-input {
+	flex: 1;
+	border: 1px solid #d1d5db;
+	border-radius: 20px;
+	padding: 8px 14px;
+	font-size: 13px;
+	resize: none;
+	outline: none;
+	max-height: 100px;
+	line-height: 1.4;
+	transition: border 0.15s;
+	font-family: inherit;
+}
+
+.coltom-msg-input:focus {
+	border-color: #1a73e8;
+}
+
+.coltom-send-btn {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #1a73e8, #0d5db5);
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	transition: transform 0.15s, background 0.15s;
+}
+
+.coltom-send-btn:hover {
+	transform: scale(1.08);
+	background: linear-gradient(135deg, #1565c0, #0b4fa0);
+}
+
+/* Sélecteur utilisateur dans Dialog */
+.coltom-user-picker {
+	max-height: 260px;
+	overflow-y: auto;
+}
+
+.coltom-user-item {
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	cursor: pointer;
+	border-radius: 8px;
+	gap: 10px;
+	transition: background 0.12s;
+}
+
+.coltom-user-item:hover {
+	background: #f0f4ff;
+}
+
+.coltom-user-name {
+	font-size: 13px;
+	color: #1f2937;
+	flex: 1;
+}
+
+/* Multi-select groupe */
+.coltom-multi-select .coltom-check {
+	color: transparent;
+	font-size: 14px;
+	font-weight: 700;
+	transition: color 0.12s;
+}
+
+.coltom-multi-select .coltom-user-item.selected {
+	background: #e8f0fe;
+}
+
+.coltom-multi-select .coltom-user-item.selected .coltom-check {
+	color: #1a73e8;
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 780px) {
+	#coltom-chat-modal {
+		width: calc(100vw - 30px);
+		height: 80vh;
+		bottom: 76px;
+		left: 15px;
+	}
+
+	.coltom-sidebar {
+		width: 180px;
+	}
+}
+
+@media (max-width: 520px) {
+	#coltom-chat-modal {
+		width: calc(100vw - 20px);
+		left: 10px;
+		bottom: 72px;
+	}
+
+	.coltom-sidebar {
+		display: none;
+	}
+}

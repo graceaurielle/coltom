@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "creation": "2026-03-26 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "full_name",
+  "last_visit"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Utilisateur",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "fetch_from": "user.full_name",
+   "in_list_view": 1,
+   "label": "Nom complet",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_visit",
+   "fieldtype": "Datetime",
+   "label": "Dernière visite"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-26 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Coltom",
+ "name": "Coltom Chat Channel Member",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC"
+}

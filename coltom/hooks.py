@@ -27,10 +27,19 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/coltom/css/coltom.css"
 # app_include_js = "/assets/coltom/js/coltom.js"
+app_include_css = [
+    "/assets/coltom/css/theme_desk.css",
+    "/assets/coltom/css/coltom_chat.css"
+]
+
+app_include_js = [
+    "/assets/coltom/js/coltom_chat.js"
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/coltom/css/coltom.css"
 # web_include_js = "/assets/coltom/js/coltom.js"
+web_include_css = "/assets/coltom/css/theme_web.css"
 
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "coltom/public/scss/website"
@@ -143,23 +152,11 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"coltom.tasks.all"
-# 	],
-# 	"daily": [
-# 		"coltom.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"coltom.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"coltom.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"coltom.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+    "daily": [
+        "coltom.tasks.delete_old_messages"
+    ],
+}
 
 # Testing
 # -------
