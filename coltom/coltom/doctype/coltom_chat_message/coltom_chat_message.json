@@ -21,7 +21,8 @@
    "in_list_view": 1,
    "label": "Canal",
    "options": "Coltom Chat Channel",
-   "reqd": 1
+   "reqd": 1,
+   "read_only": 1
   },
   {
    "fieldname": "sender",
@@ -29,41 +30,46 @@
    "in_list_view": 1,
    "label": "Expéditeur",
    "options": "User",
-   "reqd": 1
+   "reqd": 1,
+   "read_only": 1
   },
   {
    "fieldname": "sender_full_name",
    "fieldtype": "Data",
-   "label": "Nom expéditeur"
+   "label": "Nom expéditeur",
+   "read_only": 1
   },
   {
    "fieldname": "message",
    "fieldtype": "Text",
    "in_list_view": 1,
    "label": "Message",
-   "reqd": 1
+   "reqd": 1,
+   "read_only": 1
   },
   {
    "fieldname": "message_type",
    "fieldtype": "Select",
    "label": "Type",
    "options": "Text\nImage\nFile",
-   "default": "Text"
+   "default": "Text",
+   "read_only": 1
   },
   {
    "fieldname": "sent_time",
    "fieldtype": "Datetime",
    "label": "Heure d'envoi",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "is_read",
    "fieldtype": "Check",
-   "label": "Lu"
+   "label": "Lu",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2026-03-26 00:00:00.000000",
+ "modified": "2026-03-26 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Coltom",
  "name": "Coltom Chat Message",
@@ -81,7 +87,7 @@
    "role": "All",
    "share": 0,
    "submit": 0,
-   "write": 1
+   "write": 0
   }
  ],
  "sort_field": "sent_time",
