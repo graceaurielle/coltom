@@ -30,6 +30,31 @@
 			this.bindRealtime();
 			this.loadUnreadBadge();
 			this.requestNotifPermission();
+			this.watchDialogs();
+		},
+
+		/* Gestion z-index : dialog Frappe passe devant, clic sur chat modal le repasse devant */
+		watchDialogs() {
+			// Un dialog Frappe s'ouvre → chat passe en arrière-plan
+			$(document).on('show.bs.modal', '.modal', (e) => {
+				if (e.target.id !== 'coltom-chat-modal') {
+					$('#coltom-chat-modal').css('z-index', 900).addClass('behind');
+				}
+			});
+			// Un dialog Frappe se ferme → restaurer si plus aucun dialog ouvert
+			$(document).on('hidden.bs.modal', '.modal', (e) => {
+				if (e.target.id !== 'coltom-chat-modal') {
+					if (!$('.modal.show').filter((_i, el) => el.id !== 'coltom-chat-modal').length) {
+						$('#coltom-chat-modal').css('z-index', 9998).removeClass('behind');
+					}
+				}
+			});
+			// Clic sur le modal chat → repasse au premier plan (au-dessus du dialog Frappe)
+			$(document).on('mousedown', '#coltom-chat-modal', () => {
+				if ($('#coltom-chat-modal').hasClass('behind')) {
+					$('#coltom-chat-modal').css('z-index', 10100).removeClass('behind');
+				}
+			});
 		},
 
 		/* ══════════════════════════════════════════════
@@ -150,9 +175,19 @@
 								<div class="coltom-conv-header">
 									<div class="coltom-conv-info">
 										<div id="coltom-conv-avatar" class="coltom-conv-avatar-wrap"></div>
-										<div>
+										<div style="flex:1;min-width:0">
 											<div class="coltom-conv-name" id="coltom-conv-name"></div>
 											<div class="coltom-conv-sub" id="coltom-conv-members"></div>
+										</div>
+										<div id="coltom-group-actions" style="display:none;gap:4px;flex-shrink:0" class="d-flex">
+											<button class="coltom-grp-btn coltom-btn-leave" title="Quitter le groupe">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5a2 2 0 00-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
+												Quitter
+											</button>
+											<button class="coltom-grp-btn coltom-btn-delete-grp" title="Supprimer le groupe" style="display:none">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+												Supprimer
+											</button>
 										</div>
 									</div>
 								</div>
@@ -262,6 +297,42 @@
 					$(this).toggle($(this).find('.coltom-ch-name').text().toLowerCase().includes(q));
 				});
 			});
+
+			// Quitter le groupe
+			$(document).on('click', '.coltom-btn-leave', () => {
+				if (!this.activeChannel) return;
+				frappe.confirm('Voulez-vous vraiment quitter ce groupe ?', () => {
+					frappe.call({
+						method: 'coltom.api.chat.leave_channel',
+						args: { channel: this.activeChannel },
+						callback: (r) => {
+							if (r.message) {
+								this._closeActiveChannel();
+								this.loadChannels();
+								frappe.show_alert({ message: 'Vous avez quitté le groupe.', indicator: 'green' }, 4);
+							}
+						}
+					});
+				});
+			});
+
+			// Supprimer le groupe
+			$(document).on('click', '.coltom-btn-delete-grp', () => {
+				if (!this.activeChannel) return;
+				frappe.confirm('Supprimer définitivement ce groupe et tous ses messages ?', () => {
+					frappe.call({
+						method: 'coltom.api.chat.delete_channel',
+						args: { channel: this.activeChannel },
+						callback: (r) => {
+							if (r.message) {
+								this._closeActiveChannel();
+								this.loadChannels();
+								frappe.show_alert({ message: 'Groupe supprimé.', indicator: 'orange' }, 4);
+							}
+						}
+					});
+				});
+			});
 		},
 
 		/* ══════════════════════════════════════════════
@@ -311,6 +382,7 @@
 
 		openChannel(ch) {
 			this.activeChannel = ch.name;
+			this._activeChannelData = ch;
 			$('.coltom-channel-item').removeClass('active');
 			$(`.coltom-channel-item[data-id="${ch.name}"]`).addClass('active');
 			$('.coltom-empty-state').hide();
@@ -321,12 +393,31 @@
 				? `<img src="${ch.other_user_image}" class="coltom-avatar-img">`
 				: `<div class="coltom-avatar-fallback ${ch.type === 'Groupe' ? 'coltom-avatar-group' : ''}">${ch.type === 'Groupe' ? '&#128101;' : this.getInitials(ch.display_name)}</div>`;
 			$('#coltom-conv-avatar').html(av);
+
+			// Boutons groupe
+			if (ch.type === 'Groupe') {
+				$('#coltom-group-actions').css('display', 'flex');
+				const isCreator = ch.created_by === frappe.session.user;
+				$('.coltom-btn-delete-grp').toggle(isCreator);
+			} else {
+				$('#coltom-group-actions').hide();
+			}
+
 			this.loadMessages(ch.name);
 			frappe.call({ method: 'coltom.api.chat.mark_as_read', args: { channel: ch.name } });
 			ch.unread = 0;
 			this.renderChannelList();
 			this.loadUnreadBadge();
 			setTimeout(() => $('#coltom-msg-input').focus(), 100);
+		},
+
+		_closeActiveChannel() {
+			this.activeChannel = null;
+			this._activeChannelData = null;
+			$('.coltom-messages-area').hide();
+			$('.coltom-empty-state').show();
+			$('#coltom-group-actions').hide();
+			$('.coltom-channel-item').removeClass('active');
 		},
 
 		/* ══════════════════════════════════════════════
@@ -405,6 +496,15 @@
 			});
 			frappe.realtime.on('coltom_chat_new_channel', () => {
 				this.loadChannels(); this.loadUnreadBadge();
+			});
+
+			frappe.realtime.on('coltom_chat_channel_deleted', (data) => {
+				if (this.activeChannel === data.channel) {
+					this._closeActiveChannel();
+					frappe.show_alert({ message: 'Ce groupe a été supprimé par son créateur.', indicator: 'orange' }, 5);
+				}
+				this.loadChannels();
+				this.loadUnreadBadge();
 			});
 		},
 
