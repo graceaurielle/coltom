@@ -1,6 +1,6 @@
 ### Coltom
 
-cette application represente les couleurs du sites ainsi que les modifications effectuees
+cette application represente les couleurs du sites ainsi que les modifications effectuees mais aussi une appli avec sert de chat d'entreprise, elle permet de pouvoir converser à deux ou en groupe dans frappe/erpnext ( seuls les utilisateurs internes de frappe ont accès)  avec des données criptées donc impossible à dechiffrer)
 
 ### Installation
 
